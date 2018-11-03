@@ -23,7 +23,7 @@ file_out = os.path.join(parent_dir,'processed_data',input('What is the output fi
 # keeping track of a common words list, this is a list of words that we
 # don't want in our data.
 common_words = [
-    '',
+    '', 'hours', 'lecture','c–','instructor','grades','consent','instructor staff'
     'and',
     'ece',
     'of',
@@ -84,8 +84,14 @@ with open(file_data, 'r') as f:
 
 # Get rid of unwanted chars and splitting the string into a list of words
 origlist = lines.lower().split()
-wordlist = [i.strip(".:,();$-1234567890") for i in origlist]
-wordfreq = [wordlist.count(j) for j in wordlist]
+wordlist = [i.strip(".:,();$-1234567890") for i in origlist] #there could be a python library to do this, should check during code cleanup
+
+#bigrams  
+bigram_list = list(nltk.bigrams(wordlist))
+new__bigram_list = [ ' '.join(i) for i in bigram_list]
+wordlist.extend(new__bigram_list)
+
+wordfreq = [wordlist.count(j) for j in wordlist]   #could use import Counter , from collections import Counter
 freqdict = dict(zip(wordlist, wordfreq))
 
 newfreq = {}
